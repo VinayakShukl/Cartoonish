@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
-using Emgu.CV;
+﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using System;
+using System.Windows.Forms;
 
 namespace Cartoonish
 {
@@ -59,6 +59,18 @@ namespace Cartoonish
                 //updateDFT();
             }
             error.Clear();
+        }
+
+        private void colorBtn_Click(object sender, EventArgs e)
+        {
+            currImage = ColorUtils.run(currImage).Copy();
+            pictureBox.Image = currImage.ToBitmap();
+        }
+
+        private void edgebtn_Click(object sender, EventArgs e)
+        {
+            currImage = EdgeUtils.run(currImage).Copy();
+            pictureBox.Image = currImage.ToBitmap();
         }
     }
 }

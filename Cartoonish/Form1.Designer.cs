@@ -31,9 +31,10 @@
             this.components = new System.ComponentModel.Container();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.loadBtn = new System.Windows.Forms.Button();
-            this.runBtn = new System.Windows.Forms.Button();
+            this.colorBtn = new System.Windows.Forms.Button();
             this.resetBtn = new System.Windows.Forms.Button();
             this.error = new System.Windows.Forms.ErrorProvider(this.components);
+            this.edgebtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error)).BeginInit();
             this.SuspendLayout();
@@ -60,14 +61,15 @@
             this.loadBtn.UseVisualStyleBackColor = true;
             this.loadBtn.Click += new System.EventHandler(this.button1_Click);
             // 
-            // runBtn
+            // colorBtn
             // 
-            this.runBtn.Location = new System.Drawing.Point(511, 310);
-            this.runBtn.Name = "runBtn";
-            this.runBtn.Size = new System.Drawing.Size(211, 23);
-            this.runBtn.TabIndex = 2;
-            this.runBtn.Text = "Run!";
-            this.runBtn.UseVisualStyleBackColor = true;
+            this.colorBtn.Location = new System.Drawing.Point(511, 355);
+            this.colorBtn.Name = "colorBtn";
+            this.colorBtn.Size = new System.Drawing.Size(211, 23);
+            this.colorBtn.TabIndex = 2;
+            this.colorBtn.Text = "Colors";
+            this.colorBtn.UseVisualStyleBackColor = true;
+            this.colorBtn.Click += new System.EventHandler(this.colorBtn_Click);
             // 
             // resetBtn
             // 
@@ -83,13 +85,24 @@
             // 
             this.error.ContainerControl = this;
             // 
+            // edgebtn
+            // 
+            this.edgebtn.Location = new System.Drawing.Point(511, 384);
+            this.edgebtn.Name = "edgebtn";
+            this.edgebtn.Size = new System.Drawing.Size(211, 23);
+            this.edgebtn.TabIndex = 4;
+            this.edgebtn.Text = "Edges";
+            this.edgebtn.UseVisualStyleBackColor = true;
+            this.edgebtn.Click += new System.EventHandler(this.edgebtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(734, 511);
+            this.Controls.Add(this.edgebtn);
             this.Controls.Add(this.resetBtn);
-            this.Controls.Add(this.runBtn);
+            this.Controls.Add(this.colorBtn);
             this.Controls.Add(this.loadBtn);
             this.Controls.Add(this.pictureBox);
             this.Name = "Form1";
@@ -104,9 +117,10 @@
 
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Button loadBtn;
-        private System.Windows.Forms.Button runBtn;
+        private System.Windows.Forms.Button colorBtn;
         private System.Windows.Forms.Button resetBtn;
         private System.Windows.Forms.ErrorProvider error;
+        private System.Windows.Forms.Button edgebtn;
     }
 }
 
