@@ -8,6 +8,9 @@ namespace Cartoonish
     {
         public static Image<Bgr, byte> run2(Image<Bgr, byte> img)
         {
+            img = img.SmoothGaussian(5);
+            //CvInvoke.cvShowImage("Gaussian", img);
+
             img = img.SmoothMedian(7);
 
             Image<Gray, byte> canny = img.Convert<Gray, byte>().Canny(40, 100);
@@ -15,6 +18,14 @@ namespace Cartoonish
             img = canny.Convert<Bgr, byte>();
 
             img = dilate(img);
+
+
+            double area = img.Width * img.Height;
+            int threshold = (int)(area * 0.00005);
+
+            img = removeSmallCurves(img, threshold);
+
+
             return img;
         }
 
