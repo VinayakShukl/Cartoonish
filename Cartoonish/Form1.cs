@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Emgu.CV;
 using Emgu.CV.Structure;
@@ -15,7 +8,7 @@ namespace Cartoonish
     public partial class Form1 : Form
     {
 
-        private const string FILE_TYPES = "TIFF Files (*.tif)|*.tif|JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png";
+        private const string FILE_TYPES = "JPG Files (*.jpg)|*.jpg|JPEG Files (*.jpeg)|*.jpeg|PNG Files (*.png)|*.png|TIFF Files (*.tif)|*.tif";
         private string img1FilePath;
         private string img1FileName;
         private Image<Bgr, Byte> origImage;
