@@ -25,8 +25,7 @@ namespace Cartoonish
             int spaceSigma = 7;
 
             // bilatral filtering
-            for (int i = 0; i < numReps; i++)
-            {
+            for (int i = 0; i < numReps; i++) {
                 temp = small.SmoothBilatral(kernelSize, colorSigma, spaceSigma);
                 small = temp.SmoothBilatral(kernelSize, colorSigma, spaceSigma);
             }
@@ -41,12 +40,9 @@ namespace Cartoonish
             double colorScaleFactor = 24;
             byte[, ,] data = small.Data;
 
-            for (int row = 0; row < size.Height; row++)
-            {
-                for (int col = 0; col < size.Width; col++)
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
+            for (int row = 0; row < size.Height; row++) {
+                for (int col = 0; col < size.Width; col++) {
+                    for (int i = 0; i < 3; i++) {
                         int pix = (int)data[row, col, i];
                         pix = (int)(Math.Floor((pix) / colorScaleFactor) * colorScaleFactor);
                         data[row, col, i] = (byte)pix;

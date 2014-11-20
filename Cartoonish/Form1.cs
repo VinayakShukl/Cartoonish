@@ -1,4 +1,5 @@
 ﻿using Emgu.CV;
+using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System;
 using System.Windows.Forms;
@@ -23,8 +24,7 @@ namespace Cartoonish
         public Boolean checkImageUploaded()
         {
             error.Clear();
-            if (currImage == null)
-            {
+            if (currImage == null) {
                 error.SetError(loadBtn, "Upload an image!");
                 return false;
             }
@@ -36,8 +36,7 @@ namespace Cartoonish
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = FILE_TYPES;
             dialog.Title = "Please select an image file.";
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
+            if (dialog.ShowDialog() == DialogResult.OK) {
                 img1FileName = dialog.SafeFileName;
                 img1FilePath = dialog.FileName;
                 origImage = new Image<Bgr, byte>(dialog.FileName);
@@ -48,13 +47,11 @@ namespace Cartoonish
 
         private void resetBtn_Click(object sender, EventArgs e)
         {
-            if (!(origImage == null))
-            {
+            if (!(origImage == null)) {
                 pictureBox.Image = origImage.ToBitmap();
                 currImage = origImage.Copy();
             }
-            if (checkImageUploaded())
-            {
+            if (checkImageUploaded()) {
                 //updateHistogram();
                 //updateDFT();
             }
@@ -75,8 +72,18 @@ namespace Cartoonish
 
         private void runBtn_Click(object sender, EventArgs e)
         {
-            currImage = ColorUtils.run(currImage).Copy();
-            currImage = EdgeUtils.run(currImage).Copy();
+            currImage = ColorUtils.run(currImage);
+            Image<Bgr, byte> edges = EdgeUtils.run(currImage);
+            Image<Gray, byte> copy = edges.Copy().Convert<Gray, byte>();
+
+            copy = ~edges.Convert<Gray, byte>();
+            copy = copy.ThresholdBinary(new Gray(127), new Gray(255));
+            currImage = currImage.Copy(copy);
+            //CvInvoke.cvInvert(edges.Ptr, copy.Ptr, SOLVE_METHOD.CV_SVD);
+            //CvInvoke.cvShowImage("", copy);
+
+            //currImage = ColorUtils.run(currImage).Copy();
+            //currImage = EdgeUtils.run(currImage).Copy();
             pictureBox.Image = currImage.ToBitmap();
         }
     }
