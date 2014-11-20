@@ -32,8 +32,8 @@ namespace Cartoonish
 
             img = removeSmallCurves(img, threshold);
 
-
-            CvInvoke.cvDrawContours(originalImage.Ptr, ptr, new MCvScalar(0,0,255), new MCvScalar(0,0,255), 0, 2, Emgu.CV.CvEnum.LINE_TYPE.EIGHT_CONNECTED, new Point(0, 0));
+            for (; ptr != null; ptr = ptr.HNext)
+                CvInvoke.cvDrawContours(originalImage.Ptr, ptr, new MCvScalar(0, 0, 0), new MCvScalar(0, 0, 0), -1, 5, Emgu.CV.CvEnum.LINE_TYPE.EIGHT_CONNECTED, new Point(0, 0));
             Console.WriteLine(ptr);
 
             return originalImage;
@@ -41,20 +41,20 @@ namespace Cartoonish
 
         public static Image<Bgr, byte> run(Image<Bgr, byte> img)
         {
-            img = img.SmoothGaussian(5);
+            //img = img.SmoothGaussian(5);
 
-            img = img.SmoothMedian(7);
+            //img = img.SmoothMedian(7);
 
-            Image<Gray, byte> canny = img.Convert<Gray,byte>().Canny(40,75);
+            //Image<Gray, byte> canny = img.Convert<Gray,byte>().Canny(40,75);
 
-            img = canny.Convert<Bgr, byte>();
+            //img = canny.Convert<Bgr, byte>();
 
-            img = dilate(img);
+            //img = dilate(img);
 
-            double area = img.Width * img.Height;
-            int threshold = (int)(area * 0.00005);
+            //double area = img.Width * img.Height;
+            //int threshold = (int)(area * 0.00005);
 
-            img = removeSmallCurves(img, threshold);
+            //img = removeSmallCurves(img, threshold);
             return img;
 
         }
