@@ -8,6 +8,13 @@ namespace Cartoonish
     {
         public static Image<Bgr, byte> run2(Image<Bgr, byte> img)
         {
+            img = img.SmoothMedian(7);
+
+            Image<Gray, byte> canny = img.Convert<Gray, byte>().Canny(40, 100);
+
+            img = canny.Convert<Bgr, byte>();
+
+            img = dilate(img);
             return img;
         }
 
@@ -15,7 +22,7 @@ namespace Cartoonish
         {
             img = img.SmoothMedian(7);
 
-            Image<Gray, byte> canny = img.Convert<Gray,byte>().Canny(20, 150);
+            Image<Gray, byte> canny = img.Convert<Gray,byte>().Canny(40,100);
 
             img = canny.Convert<Bgr, byte>();
 
