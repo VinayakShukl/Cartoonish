@@ -69,7 +69,13 @@ namespace Cartoonish
 
         private void edgebtn_Click(object sender, EventArgs e)
         {
-            pictureBox2.Image = EdgeUtils.run2(currImage).ToBitmap();
+            currImage = EdgeUtils.run(currImage).Copy();
+            pictureBox.Image = currImage.ToBitmap();
+        }
+
+        private void runBtn_Click(object sender, EventArgs e)
+        {
+            currImage = ColorUtils.run(currImage).Copy();
             currImage = EdgeUtils.run(currImage).Copy();
             pictureBox.Image = currImage.ToBitmap();
         }

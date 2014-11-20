@@ -35,10 +35,9 @@
             this.resetBtn = new System.Windows.Forms.Button();
             this.error = new System.Windows.Forms.ErrorProvider(this.components);
             this.edgebtn = new System.Windows.Forms.Button();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.runBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox
@@ -46,16 +45,16 @@
             this.pictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox.Location = new System.Drawing.Point(27, 6);
+            this.pictureBox.Location = new System.Drawing.Point(12, 12);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(300, 357);
+            this.pictureBox.Size = new System.Drawing.Size(500, 500);
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             // 
             // loadBtn
             // 
-            this.loadBtn.Location = new System.Drawing.Point(692, 12);
+            this.loadBtn.Location = new System.Drawing.Point(547, 146);
             this.loadBtn.Name = "loadBtn";
             this.loadBtn.Size = new System.Drawing.Size(211, 23);
             this.loadBtn.TabIndex = 1;
@@ -65,7 +64,7 @@
             // 
             // colorBtn
             // 
-            this.colorBtn.Location = new System.Drawing.Point(692, 179);
+            this.colorBtn.Location = new System.Drawing.Point(547, 313);
             this.colorBtn.Name = "colorBtn";
             this.colorBtn.Size = new System.Drawing.Size(211, 23);
             this.colorBtn.TabIndex = 2;
@@ -75,7 +74,7 @@
             // 
             // resetBtn
             // 
-            this.resetBtn.Location = new System.Drawing.Point(692, 75);
+            this.resetBtn.Location = new System.Drawing.Point(547, 209);
             this.resetBtn.Name = "resetBtn";
             this.resetBtn.Size = new System.Drawing.Size(211, 23);
             this.resetBtn.TabIndex = 3;
@@ -89,7 +88,7 @@
             // 
             // edgebtn
             // 
-            this.edgebtn.Location = new System.Drawing.Point(692, 208);
+            this.edgebtn.Location = new System.Drawing.Point(547, 342);
             this.edgebtn.Name = "edgebtn";
             this.edgebtn.Size = new System.Drawing.Size(211, 23);
             this.edgebtn.TabIndex = 4;
@@ -97,24 +96,22 @@
             this.edgebtn.UseVisualStyleBackColor = true;
             this.edgebtn.Click += new System.EventHandler(this.edgebtn_Click);
             // 
-            // pictureBox2
+            // runBtn
             // 
-            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.Location = new System.Drawing.Point(348, 6);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(300, 357);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 5;
-            this.pictureBox2.TabStop = false;
+            this.runBtn.Location = new System.Drawing.Point(547, 412);
+            this.runBtn.Name = "runBtn";
+            this.runBtn.Size = new System.Drawing.Size(211, 23);
+            this.runBtn.TabIndex = 5;
+            this.runBtn.Text = "Run!";
+            this.runBtn.UseVisualStyleBackColor = true;
+            this.runBtn.Click += new System.EventHandler(this.runBtn_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(915, 375);
-            this.Controls.Add(this.pictureBox2);
+            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.runBtn);
             this.Controls.Add(this.edgebtn);
             this.Controls.Add(this.resetBtn);
             this.Controls.Add(this.colorBtn);
@@ -124,7 +121,6 @@
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.error)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -137,7 +133,7 @@
         private System.Windows.Forms.Button resetBtn;
         private System.Windows.Forms.ErrorProvider error;
         private System.Windows.Forms.Button edgebtn;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Button runBtn;
     }
 }
 
