@@ -97,6 +97,7 @@
             this.pictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox.Location = new System.Drawing.Point(12, 12);
             this.pictureBox.Name = "pictureBox";
             this.pictureBox.Size = new System.Drawing.Size(500, 500);
@@ -106,9 +107,9 @@
             // 
             // loadBtn
             // 
-            this.loadBtn.Location = new System.Drawing.Point(533, 417);
+            this.loadBtn.Location = new System.Drawing.Point(532, 349);
             this.loadBtn.Name = "loadBtn";
-            this.loadBtn.Size = new System.Drawing.Size(219, 23);
+            this.loadBtn.Size = new System.Drawing.Size(220, 27);
             this.loadBtn.TabIndex = 1;
             this.loadBtn.Text = "Load Image/Video";
             this.loadBtn.UseVisualStyleBackColor = true;
@@ -116,9 +117,9 @@
             // 
             // colorBtn
             // 
-            this.colorBtn.Location = new System.Drawing.Point(533, 465);
+            this.colorBtn.Location = new System.Drawing.Point(645, 406);
             this.colorBtn.Name = "colorBtn";
-            this.colorBtn.Size = new System.Drawing.Size(219, 23);
+            this.colorBtn.Size = new System.Drawing.Size(107, 23);
             this.colorBtn.TabIndex = 2;
             this.colorBtn.Text = "Colors";
             this.colorBtn.UseVisualStyleBackColor = true;
@@ -126,7 +127,7 @@
             // 
             // resetBtn
             // 
-            this.resetBtn.Location = new System.Drawing.Point(533, 441);
+            this.resetBtn.Location = new System.Drawing.Point(533, 489);
             this.resetBtn.Name = "resetBtn";
             this.resetBtn.Size = new System.Drawing.Size(219, 23);
             this.resetBtn.TabIndex = 3;
@@ -140,9 +141,9 @@
             // 
             // edgebtn
             // 
-            this.edgebtn.Location = new System.Drawing.Point(533, 489);
+            this.edgebtn.Location = new System.Drawing.Point(532, 406);
             this.edgebtn.Name = "edgebtn";
-            this.edgebtn.Size = new System.Drawing.Size(219, 23);
+            this.edgebtn.Size = new System.Drawing.Size(107, 23);
             this.edgebtn.TabIndex = 4;
             this.edgebtn.Text = "Edges";
             this.edgebtn.UseVisualStyleBackColor = true;
@@ -150,9 +151,9 @@
             // 
             // runBtn
             // 
-            this.runBtn.Location = new System.Drawing.Point(145, 515);
+            this.runBtn.Location = new System.Drawing.Point(532, 435);
             this.runBtn.Name = "runBtn";
-            this.runBtn.Size = new System.Drawing.Size(219, 23);
+            this.runBtn.Size = new System.Drawing.Size(220, 48);
             this.runBtn.TabIndex = 5;
             this.runBtn.Text = "Run!";
             this.runBtn.UseVisualStyleBackColor = true;
@@ -586,7 +587,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(764, 541);
+            this.ClientSize = new System.Drawing.Size(764, 521);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.runBtn);
@@ -595,7 +596,10 @@
             this.Controls.Add(this.colorBtn);
             this.Controls.Add(this.loadBtn);
             this.Controls.Add(this.pictureBox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Form1";
+            this.Opacity = 0.95D;
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.error)).EndInit();

@@ -74,35 +74,31 @@ namespace Cartoonish
                 pictureBox.Image = origImage.ToBitmap();
                 currImage = origImage.Copy();
             }
-            if (checkImageUploaded()) {
-                //updateHistogram();
-                //updateDFT();
-            }
             progressBar.Value = 0;
             error.Clear();
         }
 
         private void colorBtn_Click(object sender, EventArgs e)
         {
+            if (!checkImageUploaded()) return;
             currImage = ColorUtils.run(currImage, SCALE_FACTOR, BILLATERAL_KERNEL_SIZE, BILLATERAL_ITERATIONS).Copy();
             pictureBox.Image = currImage.ToBitmap();
         }
 
         private void edgebtn_Click(object sender, EventArgs e)
         {
+            if (!checkImageUploaded()) return;
             currImage = EdgeUtils.run(currImage, EDGE_QUANTITY, EDGE_THICKNESS).Copy();
             pictureBox.Image = currImage.ToBitmap();
         }
 
         private void runBtn_Click(object sender, EventArgs e)
         {
+            if (!checkImageUploaded()) return;
             if (isVideoSelected)
-            {
                 processVideo();
-            } else
-            {
-                processImage();
-            }
+            else
+                processImage();         
         }
 
         private void processImage()
@@ -189,11 +185,6 @@ namespace Cartoonish
                 EDGE_QUANTITY = 0.000005;
         }
 
-        private void radioButton32_CheckedChanged(object sender, EventArgs e)
-        {
-            
-        }
-
         private void edgeThicknessLow_CheckedChanged(object sender, EventArgs e)
         {
             if (((RadioButton)sender).Checked)
@@ -238,14 +229,10 @@ namespace Cartoonish
         }
 
         private void videoWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-
-        }
+        {}
 
         private void videoWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
-        {
-            progressBar.Value = e.ProgressPercentage;
-        }
+        {}
 
         private void videoWorker2_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
@@ -273,9 +260,8 @@ namespace Cartoonish
                         Image<Gray, byte> copy = edges.Copy().Convert<Gray, byte>();
                         copy = ~edges.Convert<Gray, byte>();
                         copy = copy.ThresholdBinary(new Gray(127), new Gray(255));
-                        videoWriter.WriteFrame(currFrame);
+                        videoWriter.WriteFrame(copy);
                         videoWorker2.ReportProgress((int)(i / frameCount * 100));
-                        Console.WriteLine((int)(i / frameCount * 100));
                         i++;
                     }
                     else
@@ -287,15 +273,6 @@ namespace Cartoonish
         private void videoWorker2_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {
             progressBar.Value = e.ProgressPercentage;
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            if (isVideoSelected)
-                videoWorker2.CancelAsync();
-            else
-                imageWorker.CancelAsync();
-
         }
 
         private void imageWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
