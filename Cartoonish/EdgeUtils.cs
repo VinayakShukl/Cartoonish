@@ -7,11 +7,7 @@ namespace Cartoonish
 {
     class EdgeUtils
     {
-
-        static Contour<Point> contours;
-        static Contour<Point> keepContours;
-        static Contour<Point> ptr;
-        public static Image<Bgr, byte> run(Image<Bgr, byte> img)
+        public static Image<Bgr, byte> run(Image<Bgr, byte> img, double areaThreshold, int numDilations)
         {
             Image<Bgr, byte> originalImage = img.Copy();
             img = img.SmoothGaussian(5);
@@ -20,18 +16,17 @@ namespace Cartoonish
             Image<Gray, byte> canny = img.Convert<Gray, byte>().Canny(40, 100);
 
             img = canny.Convert<Bgr, byte>();
-            img = dilate(img);
-
+            
+            int i = 0;
+            while (i <= numDilations) { 
+                img = dilate(img);
+                i++;
+            }
             double area = img.Width * img.Height;
-            int threshold = (int)(area * 0.00005);
+            int threshold = (int)(area * areaThreshold);
 
             img = removeSmallCurves(img, threshold);
 
-            for (int i=0; keepContours != null; keepContours = keepContours.HNext, i++)
-            {
-                Console.WriteLine(i);
-                CvInvoke.cvDrawContours(originalImage.Ptr, keepContours, new MCvScalar(0, 0, 0), new MCvScalar(0, 0, 0), 0, 1, Emgu.CV.CvEnum.LINE_TYPE.EIGHT_CONNECTED, new Point(0, 0));
-            }
             return img;
         }
 
@@ -54,24 +49,13 @@ namespace Cartoonish
         private static Image<Bgr, byte> removeSmallCurves(Image<Bgr, byte> img, int threshold)
         {
             Image<Gray, byte> grayFrame = img.Convert<Gray, byte>();
-            
-            contours = grayFrame.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_NONE, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_LIST);
-            keepContours = contours;
-            //keepContours.Clear();
+            Contour<Point> contours = grayFrame.FindContours(Emgu.CV.CvEnum.CHAIN_APPROX_METHOD.CV_CHAIN_APPROX_NONE, Emgu.CV.CvEnum.RETR_TYPE.CV_RETR_LIST);
 
+            Contour<Point> currentContour;
             using (MemStorage storage = new MemStorage()) {
                 for (int i = 0; contours != null; contours = contours.HNext, i++) {
-                    Contour<Point> currentContour = contours.ApproxPoly(contours.Perimeter * 0.005, storage);
-
-                    if (currentContour.Area > threshold) {
-                        try {
-                            //keepContours.Push(contours[i]);
-                        }
-                        catch (NullReferenceException) {
-                            continue;
-                        }                    
-                    }
-                    else {
+                    currentContour = contours.ApproxPoly(contours.Perimeter * 0.005, storage);
+                    if (currentContour.Area < threshold) {
                         Rectangle currentrect = currentContour.BoundingRectangle;
                         img.Draw(currentrect, new Bgr(0, 0, 0), -1);
                     }
