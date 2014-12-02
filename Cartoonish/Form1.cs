@@ -18,6 +18,7 @@ namespace Cartoonish
         private static Image<Bgr, Byte> currImage;
         private static Capture currVideo;
         private static bool isVideoSelected = false;
+        private static bool showCurrentFrame = false;
 
         private static int SCALE_FACTOR = 24, BILLATERAL_KERNEL_SIZE = 2,
             BILLATERAL_ITERATIONS = 2, EDGE_THICKNESS = 2;
@@ -73,6 +74,7 @@ namespace Cartoonish
             if (!(origImage == null)) {
                 pictureBox.Image = origImage.ToBitmap();
                 currImage = origImage.Copy();
+                Console.WriteLine("Image RESET");
             }
             progressBar.Value = 0;
             error.Clear();
@@ -205,22 +207,45 @@ namespace Cartoonish
 
         private void imageWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            if ((videoWorker.CancellationPending != false))
+            if ((imageWorker.CancellationPending == true))
             {
+
                 e.Cancel = true;
+                imageWorker.ReportProgress(0);
+                Console.WriteLine("Image Operations Stopped");
                 return;
             }
+            else
+            {
+                imageWorker.ReportProgress(10);
+                Image<Bgr, byte> color = ColorUtils.run(currImage, SCALE_FACTOR, BILLATERAL_KERNEL_SIZE, BILLATERAL_ITERATIONS);
+                
+                if(imageWorker.CancellationPending==true)
+                {
+                    Console.WriteLine("Stopped after Colors");
+                    imageWorker.ReportProgress(0);
+                    e.Cancel = true;
+                    return;
+                }
+                
+                imageWorker.ReportProgress(60);
+                Image<Bgr, byte> edges = EdgeUtils.run(currImage, EDGE_QUANTITY, EDGE_THICKNESS);
 
-            imageWorker.ReportProgress(10);
-            currImage = ColorUtils.run(currImage, SCALE_FACTOR, BILLATERAL_KERNEL_SIZE, BILLATERAL_ITERATIONS);
-            imageWorker.ReportProgress(60);
-            Image<Bgr, byte> edges = EdgeUtils.run(currImage, EDGE_QUANTITY, EDGE_THICKNESS);
-            imageWorker.ReportProgress(90);
-            Image<Gray, byte> copy = edges.Copy().Convert<Gray, byte>();
-            copy = ~edges.Convert<Gray, byte>();
-            copy = copy.ThresholdBinary(new Gray(127), new Gray(255));
-            currImage = currImage.Copy(copy);
-            imageWorker.ReportProgress(100);
+                if (imageWorker.CancellationPending == true)
+                {
+                    Console.WriteLine("Stopped after Edges");
+                    imageWorker.ReportProgress(0);
+                    e.Cancel = true;
+                    return;
+                }
+
+                imageWorker.ReportProgress(90);
+                Image<Gray, byte> copy = edges.Copy().Convert<Gray, byte>();
+                copy = ~edges.Convert<Gray, byte>();
+                copy = copy.ThresholdBinary(new Gray(127), new Gray(255));
+                currImage = currImage.Copy(copy);
+                imageWorker.ReportProgress(100);
+            }
         }
 
         private void imageWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
@@ -253,7 +278,7 @@ namespace Cartoonish
                 if ((videoWorker2.CancellationPending == true))
                 {
                     e.Cancel = true;
-                    Console.WriteLine("Operations stopped");
+                    Console.WriteLine("Video Operations stopped");
                     videoWorker2.ReportProgress(0);
                     break;
                 }
@@ -269,8 +294,14 @@ namespace Cartoonish
                         copy = ~edges.Convert<Gray, byte>();
                         copy = copy.ThresholdBinary(new Gray(127), new Gray(255));
                         currFrame = colors.Copy(copy);
-                        if (i % 30 == 0)
+
+                        //Show current frame
+                        if (showCurrentFrame)
                             pictureBox.Image = currFrame.ToBitmap();
+                        
+
+                        //if (i % 30 == 0)
+                        //    pictureBox.Image = currFrame.ToBitmap();
                         videoWriter.WriteFrame(currFrame);
                         videoWorker2.ReportProgress((int)(i / frameCount * 100));
                         i++;
@@ -296,10 +327,8 @@ namespace Cartoonish
 
         private void stopButton_Click(object sender, EventArgs e)
         {
-            videoWorker.CancelAsync();
             videoWorker2.CancelAsync();
             imageWorker.CancelAsync();
-            progressBar.Value = 1;
         }
     }
 }

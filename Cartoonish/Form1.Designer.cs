@@ -73,7 +73,6 @@
             this.radioButton36 = new System.Windows.Forms.RadioButton();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.imageWorker = new System.ComponentModel.BackgroundWorker();
-            this.videoWorker = new System.ComponentModel.BackgroundWorker();
             this.videoWorker2 = new System.ComponentModel.BackgroundWorker();
             this.stopButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
@@ -571,12 +570,6 @@
             this.imageWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.imageWorker_ProgressChanged);
             this.imageWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.imageWorker_RunWorkerCompleted);
             // 
-            // videoWorker
-            // 
-            this.videoWorker.WorkerReportsProgress = true;
-            this.videoWorker.WorkerSupportsCancellation = true;
-            this.videoWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.videoWorker_DoWork);
-            // 
             // videoWorker2
             // 
             this.videoWorker2.WorkerReportsProgress = true;
@@ -686,7 +679,6 @@
         private System.Windows.Forms.RadioButton radioButton36;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.ComponentModel.BackgroundWorker imageWorker;
-        private System.ComponentModel.BackgroundWorker videoWorker;
         private System.ComponentModel.BackgroundWorker videoWorker2;
         private System.Windows.Forms.Button stopButton;
     }
