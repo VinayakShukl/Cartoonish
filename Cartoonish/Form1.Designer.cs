@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.loadBtn = new System.Windows.Forms.Button();
             this.colorBtn = new System.Windows.Forms.Button();
@@ -76,6 +77,8 @@
             this.videoWorker = new System.ComponentModel.BackgroundWorker();
             this.videoWorker2 = new System.ComponentModel.BackgroundWorker();
             this.stopButton = new System.Windows.Forms.Button();
+            this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.histogramWorker = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -91,6 +94,7 @@
             this.groupBox11.SuspendLayout();
             this.groupBox12.SuspendLayout();
             this.groupBox13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox
@@ -101,16 +105,16 @@
             this.pictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.pictureBox.Location = new System.Drawing.Point(12, 12);
             this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(500, 500);
+            this.pictureBox.Size = new System.Drawing.Size(600, 500);
             this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox.TabIndex = 0;
             this.pictureBox.TabStop = false;
             // 
             // loadBtn
             // 
-            this.loadBtn.Location = new System.Drawing.Point(531, 328);
+            this.loadBtn.Location = new System.Drawing.Point(842, 34);
             this.loadBtn.Name = "loadBtn";
-            this.loadBtn.Size = new System.Drawing.Size(220, 31);
+            this.loadBtn.Size = new System.Drawing.Size(132, 31);
             this.loadBtn.TabIndex = 1;
             this.loadBtn.Text = "Load Image/Video";
             this.loadBtn.UseVisualStyleBackColor = true;
@@ -118,9 +122,9 @@
             // 
             // colorBtn
             // 
-            this.colorBtn.Location = new System.Drawing.Point(645, 406);
+            this.colorBtn.Location = new System.Drawing.Point(842, 151);
             this.colorBtn.Name = "colorBtn";
-            this.colorBtn.Size = new System.Drawing.Size(107, 23);
+            this.colorBtn.Size = new System.Drawing.Size(60, 23);
             this.colorBtn.TabIndex = 2;
             this.colorBtn.Text = "Colors";
             this.colorBtn.UseVisualStyleBackColor = true;
@@ -128,9 +132,9 @@
             // 
             // resetBtn
             // 
-            this.resetBtn.Location = new System.Drawing.Point(532, 489);
+            this.resetBtn.Location = new System.Drawing.Point(842, 247);
             this.resetBtn.Name = "resetBtn";
-            this.resetBtn.Size = new System.Drawing.Size(219, 23);
+            this.resetBtn.Size = new System.Drawing.Size(132, 35);
             this.resetBtn.TabIndex = 3;
             this.resetBtn.Text = "Reset";
             this.resetBtn.UseVisualStyleBackColor = true;
@@ -142,9 +146,9 @@
             // 
             // edgebtn
             // 
-            this.edgebtn.Location = new System.Drawing.Point(532, 406);
+            this.edgebtn.Location = new System.Drawing.Point(908, 151);
             this.edgebtn.Name = "edgebtn";
-            this.edgebtn.Size = new System.Drawing.Size(107, 23);
+            this.edgebtn.Size = new System.Drawing.Size(66, 23);
             this.edgebtn.TabIndex = 4;
             this.edgebtn.Text = "Edges";
             this.edgebtn.UseVisualStyleBackColor = true;
@@ -152,9 +156,9 @@
             // 
             // runBtn
             // 
-            this.runBtn.Location = new System.Drawing.Point(532, 435);
+            this.runBtn.Location = new System.Drawing.Point(842, 97);
             this.runBtn.Name = "runBtn";
-            this.runBtn.Size = new System.Drawing.Size(220, 48);
+            this.runBtn.Size = new System.Drawing.Size(132, 48);
             this.runBtn.TabIndex = 5;
             this.runBtn.Text = "Run!";
             this.runBtn.UseVisualStyleBackColor = true;
@@ -164,7 +168,7 @@
             // 
             this.tabControl1.Controls.Add(this.Colour);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(532, 12);
+            this.tabControl1.Location = new System.Drawing.Point(618, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(218, 270);
@@ -558,9 +562,9 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(532, 301);
+            this.progressBar.Location = new System.Drawing.Point(618, 290);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(218, 21);
+            this.progressBar.Size = new System.Drawing.Size(356, 21);
             this.progressBar.TabIndex = 11;
             // 
             // imageWorker
@@ -586,19 +590,45 @@
             // 
             // stopButton
             // 
-            this.stopButton.Location = new System.Drawing.Point(532, 365);
+            this.stopButton.Location = new System.Drawing.Point(842, 206);
             this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(218, 35);
+            this.stopButton.Size = new System.Drawing.Size(132, 35);
             this.stopButton.TabIndex = 12;
-            this.stopButton.Text = "Stop all operations";
+            this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = true;
             this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            // 
+            // chart1
+            // 
+            this.chart1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.chart1.BackColor = System.Drawing.Color.Transparent;
+            this.chart1.BackImageAlignment = System.Windows.Forms.DataVisualization.Charting.ChartImageAlignmentStyle.Center;
+            this.chart1.BackImageTransparentColor = System.Drawing.Color.Transparent;
+            this.chart1.BorderlineColor = System.Drawing.Color.Transparent;
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            this.chart1.Location = new System.Drawing.Point(618, 315);
+            this.chart1.Margin = new System.Windows.Forms.Padding(0);
+            this.chart1.Name = "chart1";
+            this.chart1.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
+            this.chart1.Size = new System.Drawing.Size(356, 204);
+            this.chart1.TabIndex = 0;
+            this.chart1.Text = "chart1";
+            this.chart1.Visible = false;
+            // 
+            // histogramWorker
+            // 
+            this.histogramWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.histogramWorker_DoWork);
+            this.histogramWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.histogramWorker_RunWorkerCompleted);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(764, 521);
+            this.ClientSize = new System.Drawing.Size(984, 521);
+            this.Controls.Add(this.chart1);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.tabControl1);
@@ -636,6 +666,7 @@
             this.groupBox12.PerformLayout();
             this.groupBox13.ResumeLayout(false);
             this.groupBox13.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -689,6 +720,8 @@
         private System.ComponentModel.BackgroundWorker videoWorker;
         private System.ComponentModel.BackgroundWorker videoWorker2;
         private System.Windows.Forms.Button stopButton;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.ComponentModel.BackgroundWorker histogramWorker;
     }
 }
 

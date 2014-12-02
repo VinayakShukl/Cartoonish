@@ -2,8 +2,10 @@
 using Emgu.CV.CvEnum;
 using Emgu.CV.Structure;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Cartoonish
 {
@@ -18,6 +20,7 @@ namespace Cartoonish
         private static Image<Bgr, Byte> currImage;
         private static Capture currVideo;
         private static bool isVideoSelected = false;
+        private static double[][] histogramData;
 
         private static int SCALE_FACTOR = 24, BILLATERAL_KERNEL_SIZE = 2,
             BILLATERAL_ITERATIONS = 2, EDGE_THICKNESS = 2;
@@ -26,6 +29,12 @@ namespace Cartoonish
         public Form1()
         {
             InitializeComponent();
+            chart1.ChartAreas[0].AxisX.MajorGrid.LineWidth = 0;
+            chart1.ChartAreas[0].AxisY.MajorGrid.LineWidth = 0;
+            chart1.ChartAreas[0].AxisX.Maximum = 255;
+            chart1.ChartAreas[0].AxisX.Minimum = 0;
+            chart1.ChartAreas[0].AxisY.Enabled = AxisEnabled.False;
+            chart1.ChartAreas[0].AxisX.Enabled = AxisEnabled.False;
         }
 
         public Boolean checkImageUploaded()
@@ -36,6 +45,76 @@ namespace Cartoonish
                 return false;
             }
             return true;
+        }
+
+        public static double[][] histogram(Image<Bgr, Byte> img)
+        {
+            byte[, ,] data = img.Data;
+            double[][] result = new double[3][];
+            for (int i = 0; i < 3; i++)
+                result[i] = new double[256];
+
+            int curr;
+            for (int i = 0; i < img.Height; i++)
+            {
+                for (int j = 0; j < img.Width; j++)
+                {
+                    for (int k = 0; k < 3; k++)
+                    {
+                        curr = data[i, j, k];
+                        result[k][curr] += 1;
+                    }
+                }
+            }
+            return result;
+        }
+
+        private void drawHistogram()
+        {
+            string blueSeries = "Blue";
+            string greenSeries = "Green";
+            string redSeries = "Red";
+            int TRANSPERANCY = 75;
+
+            if (chart1.Series.IndexOf(blueSeries) == -1)
+            {
+                chart1.Series.Add(blueSeries);
+                chart1.Series[blueSeries].ChartType = SeriesChartType.Area;
+                chart1.Series[blueSeries].Color = Color.FromArgb(TRANSPERANCY, Color.Blue);
+            }
+            if (chart1.Series.IndexOf(greenSeries) == -1)
+            {
+                chart1.Series.Add(greenSeries);
+                chart1.Series[greenSeries].ChartType = SeriesChartType.Area;
+                chart1.Series[greenSeries].Color = Color.FromArgb(TRANSPERANCY, Color.Green);
+            }
+            if (chart1.Series.IndexOf(redSeries) == -1)
+            {
+                chart1.Series.Add(redSeries);
+                chart1.Series[redSeries].ChartType = SeriesChartType.Area;
+                chart1.Series[redSeries].Color = Color.FromArgb(TRANSPERANCY, Color.Red);
+            }
+
+            foreach (var series in chart1.Series)
+                series.Points.Clear();
+
+            double[][] data = histogramData;
+            double[] count = new double[256];
+            for (int i = 0; i < 256; i++)
+            {
+                chart1.Series[blueSeries].Points.AddXY(i, data[0][i]);
+                chart1.Series[greenSeries].Points.AddXY(i, data[1][i]);
+                chart1.Series[redSeries].Points.AddXY(i, data[2][i]);
+            }
+        }
+
+        private void updateHistogram()
+        {
+            if (!histogramWorker.IsBusy)
+            {
+                chart1.Visible = false;
+                histogramWorker.RunWorkerAsync();
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -54,7 +133,7 @@ namespace Cartoonish
                     origImage = new Image<Bgr, byte>(dialog.FileName);
                     currImage = origImage.Copy();
                     pictureBox.Image = origImage.ToBitmap();
-
+                    updateHistogram();
                 } else
                 {
                     isVideoSelected = true;
@@ -63,7 +142,7 @@ namespace Cartoonish
                     currVideo = new Capture(videoFilePath);
                     currImage = currVideo.QueryFrame();
                     pictureBox.Image = currImage.ToBitmap();
-
+                    updateHistogram();
                 }
             }
         }
@@ -73,6 +152,7 @@ namespace Cartoonish
             if (!(origImage == null)) {
                 pictureBox.Image = origImage.ToBitmap();
                 currImage = origImage.Copy();
+                updateHistogram();
             }
             progressBar.Value = 0;
             error.Clear();
@@ -83,6 +163,7 @@ namespace Cartoonish
             if (!checkImageUploaded()) return;
             currImage = ColorUtils.run(currImage, SCALE_FACTOR, BILLATERAL_KERNEL_SIZE, BILLATERAL_ITERATIONS).Copy();
             pictureBox.Image = currImage.ToBitmap();
+            updateHistogram();
         }
 
         private void edgebtn_Click(object sender, EventArgs e)
@@ -90,6 +171,7 @@ namespace Cartoonish
             if (!checkImageUploaded()) return;
             currImage = EdgeUtils.run(currImage, EDGE_QUANTITY, EDGE_THICKNESS).Copy();
             pictureBox.Image = currImage.ToBitmap();
+            updateHistogram();
         }
 
         private void runBtn_Click(object sender, EventArgs e)
@@ -98,7 +180,7 @@ namespace Cartoonish
             if (isVideoSelected)
                 processVideo();
             else
-                processImage();         
+                processImage();
         }
 
         private void processImage()
@@ -292,6 +374,7 @@ namespace Cartoonish
         private void imageWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             pictureBox.Image = currImage.ToBitmap();
+            updateHistogram();
         }
 
         private void stopButton_Click(object sender, EventArgs e)
@@ -300,6 +383,17 @@ namespace Cartoonish
             videoWorker2.CancelAsync();
             imageWorker.CancelAsync();
             progressBar.Value = 1;
+        }
+
+        private void histogramWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            histogramData = histogram(currImage);
+        }
+
+        private void histogramWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            chart1.Visible = true;
+            drawHistogram();
         }
     }
 }
