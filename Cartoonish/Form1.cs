@@ -269,6 +269,9 @@ namespace Cartoonish
 
         private void videoWorker2_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+            //Set the progress bar to 1% to show that the process has started
+            videoWorker2.ReportProgress(1);
+            
             //Re-initialize the caputre - For the stop and start operation function
             currVideo = new Capture(videoFilePath);
             Image<Bgr, byte> currFrame;
@@ -309,7 +312,9 @@ namespace Cartoonish
                         //if (i % 30 == 0)
                         //    pictureBox.Image = currFrame.ToBitmap();
                         videoWriter.WriteFrame(currFrame);
-                        videoWorker2.ReportProgress((int)(i / frameCount * 100));
+                        int progress = (int)(i / frameCount * 100);
+                        if(progress>1)
+                            videoWorker2.ReportProgress(progress);
                         i++;
                     }
                     else
