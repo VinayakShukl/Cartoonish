@@ -78,6 +78,7 @@
             this.stopButton = new System.Windows.Forms.Button();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.histogramWorker = new System.ComponentModel.BackgroundWorker();
+            this.currFrameBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -121,9 +122,9 @@
             // 
             // colorBtn
             // 
-            this.colorBtn.Location = new System.Drawing.Point(842, 151);
+            this.colorBtn.Location = new System.Drawing.Point(842, 136);
             this.colorBtn.Name = "colorBtn";
-            this.colorBtn.Size = new System.Drawing.Size(60, 23);
+            this.colorBtn.Size = new System.Drawing.Size(63, 40);
             this.colorBtn.TabIndex = 2;
             this.colorBtn.Text = "Colors";
             this.colorBtn.UseVisualStyleBackColor = true;
@@ -131,9 +132,9 @@
             // 
             // resetBtn
             // 
-            this.resetBtn.Location = new System.Drawing.Point(842, 247);
+            this.resetBtn.Location = new System.Drawing.Point(929, 235);
             this.resetBtn.Name = "resetBtn";
-            this.resetBtn.Size = new System.Drawing.Size(132, 35);
+            this.resetBtn.Size = new System.Drawing.Size(45, 47);
             this.resetBtn.TabIndex = 3;
             this.resetBtn.Text = "Reset";
             this.resetBtn.UseVisualStyleBackColor = true;
@@ -145,9 +146,9 @@
             // 
             // edgebtn
             // 
-            this.edgebtn.Location = new System.Drawing.Point(908, 151);
+            this.edgebtn.Location = new System.Drawing.Point(911, 136);
             this.edgebtn.Name = "edgebtn";
-            this.edgebtn.Size = new System.Drawing.Size(66, 23);
+            this.edgebtn.Size = new System.Drawing.Size(63, 40);
             this.edgebtn.TabIndex = 4;
             this.edgebtn.Text = "Edges";
             this.edgebtn.UseVisualStyleBackColor = true;
@@ -155,10 +156,10 @@
             // 
             // runBtn
             // 
-            this.runBtn.Location = new System.Drawing.Point(842, 97);
+            this.runBtn.Location = new System.Drawing.Point(842, 88);
             this.runBtn.Name = "runBtn";
             this.runBtn.Size = new System.Drawing.Size(132, 48);
-            this.runBtn.TabIndex = 5;
+            this.runBtn.TabIndex = 2;
             this.runBtn.Text = "Run!";
             this.runBtn.UseVisualStyleBackColor = true;
             this.runBtn.Click += new System.EventHandler(this.runBtn_Click);
@@ -583,9 +584,9 @@
             // 
             // stopButton
             // 
-            this.stopButton.Location = new System.Drawing.Point(842, 206);
+            this.stopButton.Location = new System.Drawing.Point(842, 234);
             this.stopButton.Name = "stopButton";
-            this.stopButton.Size = new System.Drawing.Size(132, 35);
+            this.stopButton.Size = new System.Drawing.Size(81, 48);
             this.stopButton.TabIndex = 12;
             this.stopButton.Text = "Stop";
             this.stopButton.UseVisualStyleBackColor = true;
@@ -616,11 +617,22 @@
             this.histogramWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.histogramWorker_DoWork);
             this.histogramWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.histogramWorker_RunWorkerCompleted);
             // 
+            // currFrameBtn
+            // 
+            this.currFrameBtn.Location = new System.Drawing.Point(842, 176);
+            this.currFrameBtn.Name = "currFrameBtn";
+            this.currFrameBtn.Size = new System.Drawing.Size(132, 31);
+            this.currFrameBtn.TabIndex = 13;
+            this.currFrameBtn.Text = "Show Current Frame";
+            this.currFrameBtn.UseVisualStyleBackColor = true;
+            this.currFrameBtn.Click += new System.EventHandler(this.currFrameBtn_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 521);
+            this.Controls.Add(this.currFrameBtn);
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.stopButton);
             this.Controls.Add(this.progressBar);
@@ -714,6 +726,7 @@
         private System.Windows.Forms.Button stopButton;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.ComponentModel.BackgroundWorker histogramWorker;
+        private System.Windows.Forms.Button currFrameBtn;
     }
 }
 

@@ -140,7 +140,7 @@ namespace Cartoonish
                     videoFileName = dialog.SafeFileName;
                     videoFilePath = dialog.FileName;
                     currVideo = new Capture(videoFilePath);
-                    currImage = currVideo.QueryFrame();
+                    currImage = currVideo.QueryFrame().Copy();
                     pictureBox.Image = currImage.ToBitmap();
                     updateHistogram();
                 }
@@ -341,9 +341,6 @@ namespace Cartoonish
             progressBar.Value = e.ProgressPercentage;
         }
 
-        private void videoWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {}
-
         private void videoWorker_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
         {}
 
@@ -385,8 +382,10 @@ namespace Cartoonish
                         currFrame = colors.Copy(copy);
 
                         //Show current frame
-                        if (showCurrentFrame)
+                        if (showCurrentFrame) { 
                             pictureBox.Image = currFrame.ToBitmap();
+                            showCurrentFrame = false;
+                        }
                         
 
                         //if (i % 30 == 0)
@@ -432,6 +431,11 @@ namespace Cartoonish
         {
             chart1.Visible = true;
             drawHistogram();
+        }
+
+        private void currFrameBtn_Click(object sender, EventArgs e)
+        {
+            showCurrentFrame = true;
         }
     }
 }
