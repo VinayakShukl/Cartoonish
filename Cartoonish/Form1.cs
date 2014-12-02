@@ -236,18 +236,25 @@ namespace Cartoonish
 
         private void videoWorker2_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
+            //Re-initialize the caputre - For the stop and start operation function
+            currVideo = new Capture(videoFilePath);
             Image<Bgr, byte> currFrame;
             Image<Bgr, Byte> tempImage = currVideo.QueryFrame();
-            VideoWriter videoWriter = new VideoWriter("a.avi", 30, tempImage.Width, tempImage.Height, true);
+            String outputName = videoFileName + ".avi";
 
+
+            //TODO: Fix the problem with the -1 in case of restart of stopped processing
+            VideoWriter videoWriter = new VideoWriter(outputName, 25, tempImage.Width, tempImage.Height, true);
             double frameCount = currVideo.GetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_COUNT);
             int i = 0;
 
             while (true)
             {
-                if ((videoWorker.CancellationPending == true))
+                if ((videoWorker2.CancellationPending == true))
                 {
                     e.Cancel = true;
+                    Console.WriteLine("Operations stopped");
+                    videoWorker2.ReportProgress(0);
                     break;
                 }
                 else
@@ -255,17 +262,24 @@ namespace Cartoonish
                     currFrame = currVideo.QueryFrame();
                     if (currFrame != null)
                     {
+                        Console.WriteLine("Processing Frame " + i + " of " + frameCount);
                         Image<Bgr, byte> colors = ColorUtils.run(currFrame, SCALE_FACTOR, BILLATERAL_KERNEL_SIZE, BILLATERAL_ITERATIONS);
-                        Image<Bgr, byte> edges = EdgeUtils.run(colors, EDGE_QUANTITY, EDGE_THICKNESS);
+                        Image<Bgr, byte> edges = EdgeUtils.run(currFrame, EDGE_QUANTITY, EDGE_THICKNESS);
                         Image<Gray, byte> copy = edges.Copy().Convert<Gray, byte>();
                         copy = ~edges.Convert<Gray, byte>();
                         copy = copy.ThresholdBinary(new Gray(127), new Gray(255));
-                        videoWriter.WriteFrame(copy);
+                        currFrame = colors.Copy(copy);
+                        if (i % 30 == 0)
+                            pictureBox.Image = currFrame.ToBitmap();
+                        videoWriter.WriteFrame(currFrame);
                         videoWorker2.ReportProgress((int)(i / frameCount * 100));
                         i++;
                     }
                     else
+                    {
+                        videoWorker2.ReportProgress(100);
                         break;
+                    }
                 }
             }
         }
@@ -278,6 +292,14 @@ namespace Cartoonish
         private void imageWorker_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
             pictureBox.Image = currImage.ToBitmap();
+        }
+
+        private void stopButton_Click(object sender, EventArgs e)
+        {
+            videoWorker.CancelAsync();
+            videoWorker2.CancelAsync();
+            imageWorker.CancelAsync();
+            progressBar.Value = 1;
         }
     }
 }

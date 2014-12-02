@@ -75,6 +75,7 @@
             this.imageWorker = new System.ComponentModel.BackgroundWorker();
             this.videoWorker = new System.ComponentModel.BackgroundWorker();
             this.videoWorker2 = new System.ComponentModel.BackgroundWorker();
+            this.stopButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.error)).BeginInit();
             this.tabControl1.SuspendLayout();
@@ -107,9 +108,9 @@
             // 
             // loadBtn
             // 
-            this.loadBtn.Location = new System.Drawing.Point(532, 349);
+            this.loadBtn.Location = new System.Drawing.Point(531, 328);
             this.loadBtn.Name = "loadBtn";
-            this.loadBtn.Size = new System.Drawing.Size(220, 27);
+            this.loadBtn.Size = new System.Drawing.Size(220, 31);
             this.loadBtn.TabIndex = 1;
             this.loadBtn.Text = "Load Image/Video";
             this.loadBtn.UseVisualStyleBackColor = true;
@@ -127,7 +128,7 @@
             // 
             // resetBtn
             // 
-            this.resetBtn.Location = new System.Drawing.Point(533, 489);
+            this.resetBtn.Location = new System.Drawing.Point(532, 489);
             this.resetBtn.Name = "resetBtn";
             this.resetBtn.Size = new System.Drawing.Size(219, 23);
             this.resetBtn.TabIndex = 3;
@@ -557,9 +558,9 @@
             // 
             // progressBar
             // 
-            this.progressBar.Location = new System.Drawing.Point(532, 298);
+            this.progressBar.Location = new System.Drawing.Point(532, 301);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(218, 23);
+            this.progressBar.Size = new System.Drawing.Size(218, 21);
             this.progressBar.TabIndex = 11;
             // 
             // imageWorker
@@ -583,11 +584,22 @@
             this.videoWorker2.DoWork += new System.ComponentModel.DoWorkEventHandler(this.videoWorker2_DoWork);
             this.videoWorker2.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.videoWorker2_ProgressChanged);
             // 
+            // stopButton
+            // 
+            this.stopButton.Location = new System.Drawing.Point(532, 365);
+            this.stopButton.Name = "stopButton";
+            this.stopButton.Size = new System.Drawing.Size(218, 35);
+            this.stopButton.TabIndex = 12;
+            this.stopButton.Text = "Stop all operations";
+            this.stopButton.UseVisualStyleBackColor = true;
+            this.stopButton.Click += new System.EventHandler(this.stopButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(764, 521);
+            this.Controls.Add(this.stopButton);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.runBtn);
@@ -676,6 +688,7 @@
         private System.ComponentModel.BackgroundWorker imageWorker;
         private System.ComponentModel.BackgroundWorker videoWorker;
         private System.ComponentModel.BackgroundWorker videoWorker2;
+        private System.Windows.Forms.Button stopButton;
     }
 }
 
