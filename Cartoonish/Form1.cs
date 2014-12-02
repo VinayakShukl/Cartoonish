@@ -20,6 +20,7 @@ namespace Cartoonish
         private static bool isVideoSelected = false;
         private static bool showCurrentFrame = false;
 
+
         private static int SCALE_FACTOR = 24, BILLATERAL_KERNEL_SIZE = 2,
             BILLATERAL_ITERATIONS = 2, EDGE_THICKNESS = 2;
         private static double EDGE_QUANTITY = 0.00005;
@@ -105,12 +106,19 @@ namespace Cartoonish
 
         private void processImage()
         {
-            imageWorker.RunWorkerAsync();
+            if (!imageWorker.IsBusy)
+                imageWorker.RunWorkerAsync();
+            else
+                Console.WriteLine("An Image is already being processed");
         }
 
         private void processVideo()
         {
-            videoWorker2.RunWorkerAsync();
+            if (!videoWorker2.IsBusy)
+                videoWorker2.RunWorkerAsync();
+            else
+                Console.WriteLine("A Video is already being processed");
+            
         }
 
         private void scaleFactor_ValueChanged(object sender, EventArgs e)
@@ -267,12 +275,10 @@ namespace Cartoonish
             Image<Bgr, Byte> tempImage = currVideo.QueryFrame();
             String outputName = videoFileName + ".avi";
 
-
-            //TODO: Fix the problem with the -1 in case of restart of stopped processing
-            VideoWriter videoWriter = new VideoWriter(outputName, 25, tempImage.Width, tempImage.Height, true);
+            VideoWriter videoWriter = new VideoWriter(outputName, 25, tempImage.Width, tempImage.Height, true); ; 
+            
             double frameCount = currVideo.GetCaptureProperty(Emgu.CV.CvEnum.CAP_PROP.CV_CAP_PROP_FRAME_COUNT);
             int i = 0;
-
             while (true)
             {
                 if ((videoWorker2.CancellationPending == true))
