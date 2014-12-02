@@ -331,7 +331,7 @@ namespace Cartoonish
                 Image<Gray, byte> copy = edges.Copy().Convert<Gray, byte>();
                 copy = ~edges.Convert<Gray, byte>();
                 copy = copy.ThresholdBinary(new Gray(127), new Gray(255));
-                currImage = currImage.Copy(copy);
+                currImage = color.Copy(copy);
                 imageWorker.ReportProgress(100);
             }
         }
